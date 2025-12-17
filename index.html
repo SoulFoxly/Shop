@@ -8,13 +8,13 @@
         body {
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(180deg, #ffcc99 0%, #ffb366 100%);
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #ffedda 0%, #ffb366 100%);
             display: flex;
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
-            color: #333;
+            color: #4a2c1a;
         }
 
         .container {
@@ -22,38 +22,52 @@
             max-width: 450px;
             text-align: center;
             padding: 40px 20px;
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .logo {
-            width: 220px; 
+            width: 210px;
             height: auto;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
+            filter: drop-shadow(0 5px 15px rgba(192, 90, 48, 0.3));
         }
 
         h1 {
-            font-size: 24px;
-            letter-spacing: 2px;
+            font-size: 22px;
+            letter-spacing: 4px;
             text-transform: uppercase;
             margin: 0 0 30px 0;
-            font-weight: 400;
+            font-weight: 600;
+            color: #8e4222;
         }
 
         .about-section {
             text-align: left;
-            background: rgba(255, 255, 255, 0.2);
-            padding: 20px;
-            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 20px;
             margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
         }
 
         .about-section h2 {
-            font-size: 18px;
+            font-size: 16px;
             margin-top: 0;
             text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #c05a30;
         }
 
         .about-section p {
-            font-size: 14px;
+            font-size: 15px;
             line-height: 1.6;
             margin-bottom: 0;
         }
@@ -68,23 +82,30 @@
             background: #c05a30;
             color: white;
             text-decoration: none;
-            padding: 15px;
-            border-radius: 10px;
-            font-weight: bold;
+            padding: 16px;
+            border-radius: 15px;
+            font-weight: 600;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: transform 0.2s, background 0.2s;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 6px 15px rgba(192, 90, 48, 0.2);
         }
 
         .link-button:hover {
             background: #a84a25;
-            transform: translateY(-2px);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px rgba(192, 90, 48, 0.4);
+        }
+
+        /* Эффект при нажатии */
+        .link-button:active {
+            transform: translateY(-1px);
         }
         
         .full-width {
             grid-column: span 2;
+            background: #d36a3d;
         }
 
         @media (max-width: 350px) {
@@ -103,7 +124,7 @@
 
         <div class="about-section">
             <h2>О НАС</h2>
-            <p><strong>SoulFoxly</strong> — это что то. Тест.</p>
+            <p><strong>SoulFoxly</strong> — это что то. Тест</p>
         </div>
 
         <div class="links-grid">
