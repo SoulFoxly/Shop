@@ -55,7 +55,6 @@
             text-align: center;
             padding: 20px;
             box-sizing: border-box;
-            animation: fadeIn 0.8s ease-in-out;
             pointer-events: none;
         }
 
@@ -63,12 +62,7 @@
             pointer-events: auto;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Автоматически двигающийся логотип (только вверх и вниз) */
+        /* Автоматически двигающийся логотип */
         .logo-container {
             margin-bottom: 5px;
             display: inline-block;
@@ -87,6 +81,7 @@
             user-select: none;
         }
 
+        /* Эффект появления для заголовка */
         h1 {
             font-size: 22px;
             letter-spacing: 4px;
@@ -94,8 +89,10 @@
             margin: 0 0 30px 0;
             font-weight: 700;
             color: #8e4222;
+            animation: fadeInDown 0.8s ease-out;
         }
 
+        /* Эффект появления для секции О НАС */
         .about-section {
             text-align: left;
             background: var(--glass-bg);
@@ -106,6 +103,7 @@
             margin-bottom: 30px;
             border: 1px solid var(--glass-border);
             box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            animation: scaleIn 0.6s ease-out;
         }
 
         .about-section h2 {
@@ -128,6 +126,7 @@
             gap: 15px;
         }
 
+        /* Эффект появления для кнопок */
         .link-button {
             background: #c05a30;
             color: white;
@@ -140,7 +139,15 @@
             justify-content: center;
             transition: all 0.3s ease;
             box-shadow: 0 6px 15px rgba(192, 90, 48, 0.2);
+            animation: slideUp 0.5s ease-out backwards;
         }
+
+        /* Задержки появления кнопок */
+        .link-button:nth-child(1) { animation-delay: 0.1s; }
+        .link-button:nth-child(2) { animation-delay: 0.2s; }
+        .link-button:nth-child(3) { animation-delay: 0.3s; }
+        .link-button:nth-child(4) { animation-delay: 0.4s; }
+        .link-button:nth-child(5) { animation-delay: 0.5s; }
 
         .link-button:hover {
             background: #a84a25;
@@ -151,6 +158,22 @@
         .full-width {
             grid-column: span 2;
             background: #d36a3d;
+        }
+
+        /* АНИМАЦИИ ИЗ ВАШЕГО ПРИМЕРА */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .floating-particle {
@@ -201,11 +224,10 @@
         const canvas = document.getElementById('decoration-canvas');
         const items = ['🦊', '🧡', '🦊', '🧡', '✨'];
         const particles = [];
-        const particleCount = 35; // Увеличено количество элементов
+        const particleCount = 30; 
         let mouseX = -1000;
         let mouseY = -1000;
 
-        // Отслеживание мыши
         document.addEventListener('mousemove', (e) => {
             mouseX = e.clientX;
             mouseY = e.clientY;
@@ -220,7 +242,6 @@
                 
                 this.init();
                 
-                // Взаимодействие при клике
                 this.element.addEventListener('mousedown', () => this.boost());
             }
 
@@ -230,7 +251,6 @@
                 this.size = 20 + Math.random() * 20;
                 this.element.style.fontSize = `${this.size}px`;
                 
-                // Базовая скорость
                 this.vx = (Math.random() - 0.5) * 1.8;
                 this.vy = (Math.random() - 0.5) * 1.8;
                 this.rotation = Math.random() * 360;
@@ -244,7 +264,6 @@
             }
 
             update() {
-                // Взаимодействие с курсором (убегание)
                 const dx = this.x - mouseX;
                 const dy = this.y - mouseY;
                 const distance = Math.sqrt(dx * dx + dy * dy);
@@ -259,15 +278,12 @@
                 this.y += this.vy;
                 this.rotation += this.rotationSpeed;
 
-                // Ограничение скорости (трение)
                 this.vx *= 0.98;
                 this.vy *= 0.98;
 
-                // Чтобы не останавливались
                 if (Math.abs(this.vx) < 0.2) this.vx += (Math.random() - 0.5) * 0.1;
                 if (Math.abs(this.vy) < 0.2) this.vy += (Math.random() - 0.5) * 0.1;
 
-                // Границы экрана (бесконечный цикл)
                 if (this.x < -50) this.x = window.innerWidth + 50;
                 if (this.x > window.innerWidth + 50) this.x = -50;
                 if (this.y < -50) this.y = window.innerHeight + 50;
