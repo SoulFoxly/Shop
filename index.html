@@ -4,25 +4,63 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SoulFoxly — Визитка</title>
+    <!-- Подключаем современный шрифт -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    
     <style>
+        :root {
+            --brand-orange: #FFB366;
+            --accent-dark: #4a2c1a;
+            --white: #ffffff;
+            --glass-bg: rgba(255, 255, 255, 0.3);
+            --glass-border: rgba(255, 255, 255, 0.4);
+        }
+
         body {
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background: linear-gradient(135deg, #ffedda 0%, #ffb366 100%);
+            font-family: 'Montserrat', sans-serif;
+            background: var(--brand-orange);
+            background: linear-gradient(135deg, #FFB366 0%, #ff9e42 100%);
+            background-attachment: fixed;
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
             min-height: 100vh;
-            color: #4a2c1a;
+            color: var(--accent-dark);
+            overflow: hidden;
+            position: relative;
+            touch-action: none;
+        }
+
+        /* Интерактивный фон */
+        #decoration-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: auto;
         }
 
         .container {
+            position: relative;
+            z-index: 10;
             width: 90%;
-            max-width: 450px;
+            max-width: 420px;
             text-align: center;
-            padding: 40px 20px;
+            padding: 20px;
+            box-sizing: border-box;
             animation: fadeIn 0.8s ease-in-out;
+            pointer-events: none;
+        }
+
+        .container > *, .links-grid > * {
+            pointer-events: auto;
         }
 
         @keyframes fadeIn {
@@ -30,11 +68,23 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* Автоматически двигающийся логотип (только вверх и вниз) */
+        .logo-container {
+            margin-bottom: 5px;
+            display: inline-block;
+            animation: floatLogo 4s ease-in-out infinite;
+        }
+
+        @keyframes floatLogo {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
         .logo {
             width: 210px;
             height: auto;
-            margin-bottom: 5px;
-            filter: drop-shadow(0 5px 15px rgba(192, 90, 48, 0.3));
+            filter: drop-shadow(0 10px 20px rgba(192, 90, 48, 0.4));
+            user-select: none;
         }
 
         h1 {
@@ -42,19 +92,19 @@
             letter-spacing: 4px;
             text-transform: uppercase;
             margin: 0 0 30px 0;
-            font-weight: 600;
+            font-weight: 700;
             color: #8e4222;
         }
 
         .about-section {
             text-align: left;
-            background: rgba(255, 255, 255, 0.4);
+            background: var(--glass-bg);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             padding: 25px;
             border-radius: 20px;
             margin-bottom: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            border: 1px solid var(--glass-border);
             box-shadow: 0 10px 25px rgba(0,0,0,0.05);
         }
 
@@ -88,7 +138,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.3s ease;
             box-shadow: 0 6px 15px rgba(192, 90, 48, 0.2);
         }
 
@@ -98,27 +148,37 @@
             box-shadow: 0 10px 20px rgba(192, 90, 48, 0.4);
         }
 
-        /* Эффект при нажатии */
-        .link-button:active {
-            transform: translateY(-1px);
-        }
-        
         .full-width {
             grid-column: span 2;
             background: #d36a3d;
         }
 
-        @media (max-width: 350px) {
+        .floating-particle {
+            position: absolute;
+            user-select: none;
+            cursor: pointer;
+            z-index: 1;
+            will-change: transform;
+        }
+
+        @media (max-width: 380px) {
             .links-grid {
                 grid-template-columns: 1fr;
+            }
+            .full-width {
+                grid-column: span 1;
             }
         }
     </style>
 </head>
 <body>
 
+    <div id="decoration-canvas"></div>
+
     <div class="container">
-        <img src="https://raw.githubusercontent.com/SoulFoxly/Shop/main/logo.png" alt="SF" class="logo" onerror="this.style.display='none'">
+        <div class="logo-container">
+            <img src="https://raw.githubusercontent.com/SoulFoxly/Shop/main/logo.png" alt="SF" class="logo" id="main-logo" onerror="this.style.display='none'">
+        </div>
         
         <h1>SoulFoxly</h1>
 
@@ -128,14 +188,113 @@
         </div>
 
         <div class="links-grid">
-            <a href="https://l.likee.video/p/3j2mhg" class="link-button">Likee</a>
-            <a href="https://instagram.com/sofi_fox_offi?utm_medium=copy_link" class="link-button">Instagram</a>
-            <a href="https://vk.com/id555528285" class="link-button">ВКонтакте</a>
-            <a href="https://youtube.com/channel/UCBT6xvXP7Kp4QkXLh4iLdUA" class="link-button">YouTube</a>
+            <a href="https://l.likee.video/p/3j2mhg" class="link-button" target="_blank">Likee</a>
+            <a href="https://instagram.com/sofi_fox_offi?utm_medium=copy_link" class="link-button" target="_blank">Instagram</a>
+            <a href="https://vk.com/id555528285" class="link-button" target="_blank">ВКонтакте</a>
+            <a href="https://youtube.com/channel/UCBT6xvXP7Kp4QkXLh4iLdUA" class="link-button" target="_blank">YouTube</a>
             
-            <a href="https://t.me/sofi_foxxx" class="link-button full-width">Telegram</a>
+            <a href="https://t.me/sofi_foxxx" class="link-button full-width" target="_blank">Telegram</a>
         </div>
     </div>
+
+    <script>
+        const canvas = document.getElementById('decoration-canvas');
+        const items = ['🦊', '🧡', '🦊', '🧡', '✨'];
+        const particles = [];
+        const particleCount = 35; // Увеличено количество элементов
+        let mouseX = -1000;
+        let mouseY = -1000;
+
+        // Отслеживание мыши
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        class Particle {
+            constructor() {
+                this.element = document.createElement('div');
+                this.element.className = 'floating-particle';
+                this.element.innerText = items[Math.floor(Math.random() * items.length)];
+                canvas.appendChild(this.element);
+                
+                this.init();
+                
+                // Взаимодействие при клике
+                this.element.addEventListener('mousedown', () => this.boost());
+            }
+
+            init() {
+                this.x = Math.random() * window.innerWidth;
+                this.y = Math.random() * window.innerHeight;
+                this.size = 20 + Math.random() * 20;
+                this.element.style.fontSize = `${this.size}px`;
+                
+                // Базовая скорость
+                this.vx = (Math.random() - 0.5) * 1.8;
+                this.vy = (Math.random() - 0.5) * 1.8;
+                this.rotation = Math.random() * 360;
+                this.rotationSpeed = (Math.random() - 0.5) * 1.5;
+                this.element.style.opacity = 0.4 + Math.random() * 0.5;
+            }
+
+            boost() {
+                this.vx *= 8;
+                this.vy *= 8;
+            }
+
+            update() {
+                // Взаимодействие с курсором (убегание)
+                const dx = this.x - mouseX;
+                const dy = this.y - mouseY;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                
+                if (distance < 150) {
+                    const force = (150 - distance) / 150;
+                    this.vx += (dx / distance) * force * 0.6;
+                    this.vy += (dy / distance) * force * 0.6;
+                }
+
+                this.x += this.vx;
+                this.y += this.vy;
+                this.rotation += this.rotationSpeed;
+
+                // Ограничение скорости (трение)
+                this.vx *= 0.98;
+                this.vy *= 0.98;
+
+                // Чтобы не останавливались
+                if (Math.abs(this.vx) < 0.2) this.vx += (Math.random() - 0.5) * 0.1;
+                if (Math.abs(this.vy) < 0.2) this.vy += (Math.random() - 0.5) * 0.1;
+
+                // Границы экрана (бесконечный цикл)
+                if (this.x < -50) this.x = window.innerWidth + 50;
+                if (this.x > window.innerWidth + 50) this.x = -50;
+                if (this.y < -50) this.y = window.innerHeight + 50;
+                if (this.y > window.innerHeight + 50) this.y = -50;
+
+                this.element.style.transform = `translate(${this.x}px, ${this.y}px) rotate(${this.rotation}deg)`;
+            }
+        }
+
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+
+        function animate() {
+            particles.forEach(p => p.update());
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+
+        window.addEventListener('resize', () => {
+            particles.forEach(p => {
+                if (p.x > window.innerWidth) p.x = Math.random() * window.innerWidth;
+                if (p.y > window.innerHeight) p.y = Math.random() * window.innerHeight;
+            });
+        });
+    </script>
 
 </body>
 </html>
